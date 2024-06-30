@@ -5,7 +5,7 @@ import { LoginPage } from "./index";
 it("should render login page with form", () => {
   render(<LoginPage />);
   const heading = screen.getByText("Login");
-  const usernameInput = screen.getByPlaceholderText("Username");
+  const usernameInput = screen.getByPlaceholderText("Email");
   const passwordInput = screen.getByPlaceholderText("Password");
   const rememberMeCheckbox = screen.getByRole("checkbox");
   const forgotPasswordLink = screen.getByRole("link", {
