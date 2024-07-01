@@ -38,7 +38,7 @@ const handleGetSelfDetails = async () => {
 };
 
 export const LoginPage: React.FC = () => {
-  const { setUser, removeUser } = useAuthStore();
+  const { setUser } = useAuthStore();
   const { mutate: logoutMutation } = useLogout();
   const { isAllowed } = usePermission();
 
@@ -55,7 +55,6 @@ export const LoginPage: React.FC = () => {
       const response = await refetch();
       if (!isAllowed(response.data)) {
         logoutMutation();
-        removeUser();
         return;
       }
       setUser(response.data);
