@@ -10,10 +10,10 @@ import {
   Flex,
   Alert,
 } from "antd";
-import { LockFilled, UserOutlined, LockOutlined } from "@ant-design/icons";
-import { useMutation } from "@tanstack/react-query";
+import { LockFilled, MailOutlined, LockOutlined } from "@ant-design/icons";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import type { Credentials } from "@/types";
-import { login } from "@/http/api";
+import { login, self } from "@/http/api";
 
 const CardTitle = () => {
   return (
@@ -29,10 +29,25 @@ const handleLogin = async (values: Credentials) => {
   return data;
 };
 
+const handleGetSelfDetails = async () => {
+  const { data } = await self();
+  return data;
+};
+
 export const LoginPage: React.FC = () => {
+  const { data, refetch } = useQuery({
+    queryKey: ["auth/self"],
+    queryFn: handleGetSelfDetails,
+    enabled: false,
+  });
+
   const { mutate, isPending, isError, error } = useMutation({
     mutationKey: ["auth/login"],
     mutationFn: handleLogin,
+    onSuccess() {
+      refetch();
+      console.log("Current user details", data);
+    },
   });
   return (
     <Layout style={{ height: "100vh", display: "grid", placeItems: "center" }}>
@@ -54,7 +69,7 @@ export const LoginPage: React.FC = () => {
           >
             <Input
               disabled={isPending}
-              prefix={<UserOutlined />}
+              prefix={<MailOutlined />}
               placeholder="Email"
             />
           </Form.Item>
