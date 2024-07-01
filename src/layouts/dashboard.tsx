@@ -1,14 +1,28 @@
 import * as React from "react";
 import { useAuthStore } from "@/store/auth";
 import { Link, Navigate, Outlet } from "react-router-dom";
-import { Layout, Menu, Breadcrumb, MenuProps, theme } from "antd";
 import {
+  Layout,
+  Menu,
+  Breadcrumb,
+  MenuProps,
+  theme,
+  Flex,
+  Badge,
+  Space,
+  Dropdown,
+  Avatar,
+} from "antd";
+import {
+  BellFilled,
   GiftOutlined,
   HomeOutlined,
+  LogoutOutlined,
   ShopOutlined,
   ShoppingCartOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { useLogout } from "@/hooks/useLogout";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -45,6 +59,7 @@ export const Dashboard = () => {
     token: { colorBgContainer },
   } = theme.useToken();
   const { user } = useAuthStore();
+  const { mutate } = useLogout();
   if (!user) {
     return <Navigate to="/auth/login" replace />;
   }
@@ -62,7 +77,38 @@ export const Dashboard = () => {
         <Menu defaultSelectedKeys={["/"]} mode="inline" items={items} />
       </Layout.Sider>
       <Layout>
-        <Layout.Header style={{ padding: 0, background: colorBgContainer }} />
+        <Layout.Header
+          style={{
+            paddingRight: 16,
+            paddingLeft: 16,
+            background: colorBgContainer,
+          }}
+        >
+          <Flex align="start" justify="space-between">
+            <Badge text="Global" status="success" />
+            <Space align="center" size="large">
+              <Badge dot>
+                <BellFilled />
+              </Badge>
+              <Dropdown
+                menu={{
+                  items: [
+                    {
+                      key: "logout",
+                      label: "Logout",
+                      icon: <LogoutOutlined />,
+                      onClick: () => mutate(),
+                    },
+                  ],
+                }}
+                placement="bottomRight"
+                arrow={{ pointAtCenter: true }}
+              >
+                <Avatar icon={<UserOutlined />} />
+              </Dropdown>
+            </Space>
+          </Flex>
+        </Layout.Header>
         <Layout.Content style={{ margin: "0 16px" }}>
           <Breadcrumb style={{ margin: "16px 0" }}>
             <Breadcrumb.Item>User</Breadcrumb.Item>
