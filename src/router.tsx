@@ -5,6 +5,9 @@ import { NonAuthenticatedRoutes } from "@/layouts/nonAuthenticatedRoutes";
 import { Dashboard } from "@/layouts/dashboard";
 import { RootLayout } from "./layouts/root";
 
+import { HomePage } from "@/pages/home";
+import { UsersPage } from "./pages/users";
+
 export const router = createBrowserRouter([
   {
     path: "",
@@ -16,7 +19,11 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "",
-            element: <div>Hello World</div>,
+            element: <HomePage />,
+          },
+          {
+            path: "/users",
+            element: <UsersPage />,
           },
         ],
       },
