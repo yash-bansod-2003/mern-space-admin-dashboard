@@ -12,9 +12,10 @@ import {
 } from "antd";
 import { LockFilled, MailOutlined, LockOutlined } from "@ant-design/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import type { Credentials } from "@/types";
+import { Roles, type Credentials } from "@/types";
 import { login, self } from "@/http/api";
 import { useAuthStore } from "@/store/auth";
+import { useLogout } from "@/hooks/useLogout";
 
 const CardTitle = () => {
   return (
@@ -36,7 +37,8 @@ const handleGetSelfDetails = async () => {
 };
 
 export const LoginPage: React.FC = () => {
-  const { setUser } = useAuthStore();
+  const { mutate: logoutMutation } = useLogout();
+  const { setUser, removeUser } = useAuthStore();
 
   const { refetch } = useQuery({
     queryKey: ["auth/self"],
@@ -49,6 +51,11 @@ export const LoginPage: React.FC = () => {
     mutationFn: handleLogin,
     onSuccess: async () => {
       const response = await refetch();
+      if (response.data.role === Roles.CUSTOMER) {
+        logoutMutation();
+        removeUser();
+        return;
+      }
       setUser(response.data);
     },
   });

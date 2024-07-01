@@ -7,6 +7,11 @@ export const login = async (values: Credentials) => {
   return response;
 };
 
+export const logout = async () => {
+  const response = api.post("/api/auth/logout");
+  return response;
+};
+
 export const self = async () => {
   const response = api.get("/api/auth/self");
   return response;
