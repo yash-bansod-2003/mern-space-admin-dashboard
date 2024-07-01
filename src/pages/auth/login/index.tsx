@@ -14,6 +14,7 @@ import { LockFilled, MailOutlined, LockOutlined } from "@ant-design/icons";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import type { Credentials } from "@/types";
 import { login, self } from "@/http/api";
+import { useAuthStore } from "@/store/auth";
 
 const CardTitle = () => {
   return (
@@ -35,7 +36,9 @@ const handleGetSelfDetails = async () => {
 };
 
 export const LoginPage: React.FC = () => {
-  const { data, refetch } = useQuery({
+  const { setUser } = useAuthStore();
+
+  const { refetch } = useQuery({
     queryKey: ["auth/self"],
     queryFn: handleGetSelfDetails,
     enabled: false,
@@ -44,9 +47,9 @@ export const LoginPage: React.FC = () => {
   const { mutate, isPending, isError, error } = useMutation({
     mutationKey: ["auth/login"],
     mutationFn: handleLogin,
-    onSuccess() {
-      refetch();
-      console.log("Current user details", data);
+    onSuccess: async () => {
+      const response = await refetch();
+      setUser(response.data);
     },
   });
   return (
