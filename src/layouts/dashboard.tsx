@@ -23,6 +23,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { useLogout } from "@/hooks/useLogout";
+import { Logo } from "@/components/logo";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -71,8 +72,16 @@ export const Dashboard = () => {
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
       >
-        <div style={{ height: 64 }} className="demo-logo-vertical">
-          Logo
+        <div
+          style={{
+            height: 64,
+            display: "flex",
+            alignItems: "center",
+            padding: "0 1.5rem",
+          }}
+          className="demo-logo-vertical"
+        >
+          <Logo />
         </div>
         <Menu defaultSelectedKeys={["/"]} mode="inline" items={items} />
       </Layout.Sider>
@@ -85,7 +94,10 @@ export const Dashboard = () => {
           }}
         >
           <Flex align="start" justify="space-between">
-            <Badge text="Global" status="success" />
+            <Badge
+              text={user?.tenant ? user.tenant.name : "Global"}
+              status="success"
+            />
             <Space align="center" size="large">
               <Badge dot>
                 <BellFilled />

@@ -3,8 +3,9 @@ import ReactDOM from "react-dom/client";
 import { ConfigProvider } from "antd";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "./App.tsx";
-import "./index.css";
+import "@fontsource-variable/inter";
 import "antd/dist/reset.css";
+import "./index.css";
 
 const queryClient = new QueryClient();
 
