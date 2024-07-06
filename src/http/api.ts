@@ -16,3 +16,8 @@ export const self = async () => {
   const response = api.get("/api/auth/self");
   return response;
 };
+
+export const getUsers = async () => {
+  const response = api.get("/api/user");
+  return response;
+};
