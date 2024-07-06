@@ -2,7 +2,7 @@
 FROM node:20-alpine AS builder
 
 # Set the working directory in the container
-WORKDIR /app
+WORKDIR /build
 
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
@@ -17,17 +17,22 @@ COPY . .
 RUN npm run build
 
 # Use a smaller base image for production
-FROM node:20-alpine
+FROM node:20-alpine AS runner
+
+# Set environment variables
+ENV NODE_ENV=production
 
 # Set the working directory in the container
 WORKDIR /app
 
 # Copy only the necessary files from the build stage
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/package*.json ./
+COPY --from=builder /build/package*.json ./
 
 # Install only production dependencies
 RUN npm ci --omit=dev
+
+# Copy only the necessary files from the build stage
+COPY --from=builder /build/dist ./dist
 
 # Install serve it will helps to serve a single page application
 RUN npm i -g serve
