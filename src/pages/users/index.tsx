@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from "react";
 import { Breadcrumb, Button, Drawer, Space, Table } from "antd";
 import { Link, Navigate } from "react-router-dom";
 import { PlusOutlined, RightOutlined } from "@ant-design/icons";
@@ -53,16 +53,16 @@ export const UsersPage = () => {
         separator={<RightOutlined />}
         items={[{ title: <Link to="/">Dashboard</Link> }, { title: "Users" }]}
       />
-      <UserFilters >
-        <Button onClick={() => setOpen(true)} type="primary" icon={<PlusOutlined />}>
+      <UserFilters>
+        <Button
+          onClick={() => setOpen(true)}
+          type="primary"
+          icon={<PlusOutlined />}
+        >
           Add User
         </Button>
       </UserFilters>
-      <Table
-        dataSource={data}
-        columns={columns}
-        rowKey={(row) => row.id}
-      />;
+      <Table dataSource={data} columns={columns} rowKey={(row) => row.id} />;
       <Drawer
         title="Create User"
         onClose={() => setOpen(false)}
@@ -71,7 +71,7 @@ export const UsersPage = () => {
         extra={
           <Space>
             <Button>Cancle</Button>
-            <Button type='primary'>Submit</Button>
+            <Button type="primary">Submit</Button>
           </Space>
         }
       >
