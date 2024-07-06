@@ -1,27 +1,39 @@
+# Use the official Node.js image
 FROM node:20-alpine AS builder
 
-WORKDIR /build
-
-COPY package*.json ./
-
-RUN npm ci
-
-COPY . .
-
-RUN npm run build
-
-FROM node:20-alpine AS runner
-
-ENV NODE_ENV=production
-
+# Set the working directory in the container
 WORKDIR /app
 
-COPY --from=builder /build/package*.json ./
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
 
-RUN npm ci --ignore-scripts --omit=dev
+# Install dependencies
+RUN npm ci 
 
-COPY --from=builder /build/dist ./dist/
+# Copy the rest of the application code to the working directory
+COPY . .
 
-EXPOSE 5173
+# Build the TypeScript code
+RUN npm run build
 
-CMD [ "npm" , "run" , "preview" ]
+# Use a smaller base image for production
+FROM node:20-alpine
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy only the necessary files from the build stage
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package*.json ./
+
+# Install only production dependencies
+RUN npm ci --only=production
+
+# Install serve it will helps to serve a single page application
+RUN npm i -g serve
+
+# Expose the port your application will run on
+EXPOSE 4173
+
+# Start the application
+CMD [ "serve", "-s", "dist" , "-p" , "4173"]
