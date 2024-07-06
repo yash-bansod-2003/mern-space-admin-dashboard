@@ -26,13 +26,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          VITE_BACKEND_API_URL: ${{ secrets.VITE_BACKEND_API_URL }}
 
   build-and-deploy:
     name: Build and Deploy To Docker
     needs: build
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: yashbansod2003/mernspace_auth_service
+      IMAGE_NAME: yashbansod2003/mernspace_admin_dashboard
       IMAGE_TAG: build-${{ github.run_number }}
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     steps:
