@@ -12,6 +12,8 @@ beforeEach(() => {
     removeEventListener: vi.fn(),
     dispatchEvent: vi.fn(),
   }));
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const coumputedStyleMock = vi.fn().mockImplementation((_) => ({}));
   vi.stubGlobal("matchMedia", matchMediaMock);
   vi.stubGlobal("computedStyle", coumputedStyleMock);
