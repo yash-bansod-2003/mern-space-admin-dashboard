@@ -1,10 +1,12 @@
-import { Breadcrumb, Space, Table } from "antd";
+import * as React from 'react'
+import { Breadcrumb, Button, Drawer, Space, Table } from "antd";
 import { Link, Navigate } from "react-router-dom";
-import { RightOutlined } from "@ant-design/icons";
+import { PlusOutlined, RightOutlined } from "@ant-design/icons";
 import { getUsers } from "@/http/api";
 import { useQuery } from "@tanstack/react-query";
 import { User } from "@/types";
 import { useAuthStore } from "@/store/auth";
+import { UserFilters } from "./user-filters";
 
 const handleGetUsers = async () => {
   const response = await getUsers();
@@ -36,6 +38,7 @@ const columns = [
 
 export const UsersPage = () => {
   const { user } = useAuthStore();
+  const [open, setOpen] = React.useState<boolean>(false);
   const { data } = useQuery({
     queryKey: ["users"],
     queryFn: handleGetUsers,
@@ -50,8 +53,32 @@ export const UsersPage = () => {
         separator={<RightOutlined />}
         items={[{ title: <Link to="/">Dashboard</Link> }, { title: "Users" }]}
       />
-      ;
-      <Table dataSource={data} columns={columns} />;
+      <UserFilters >
+        <Button onClick={() => setOpen(true)} type="primary" icon={<PlusOutlined />}>
+          Add User
+        </Button>
+      </UserFilters>
+      <Table
+        dataSource={data}
+        columns={columns}
+        rowKey={(row) => row.id}
+      />;
+      <Drawer
+        title="Create User"
+        onClose={() => setOpen(false)}
+        open={open}
+        destroyOnClose
+        extra={
+          <Space>
+            <Button>Cancle</Button>
+            <Button type='primary'>Submit</Button>
+          </Space>
+        }
+      >
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Drawer>
     </Space>
   );
 };
