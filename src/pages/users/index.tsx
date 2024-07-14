@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Breadcrumb, Button, Drawer, Space, Table } from "antd";
+import { Breadcrumb, Button, Drawer, Space, Table, theme } from "antd";
 import { Link, Navigate } from "react-router-dom";
 import { PlusOutlined, RightOutlined } from "@ant-design/icons";
 import { getUsers } from "@/http/api";
@@ -39,6 +39,7 @@ const columns = [
 export const UsersPage = () => {
   const { user } = useAuthStore();
   const [open, setOpen] = React.useState<boolean>(false);
+  const { token: { colorBgLayout } } = theme.useToken();
   const { data } = useQuery({
     queryKey: ["users"],
     queryFn: handleGetUsers,
@@ -62,10 +63,11 @@ export const UsersPage = () => {
           Add User
         </Button>
       </UserFilters>
-      <Table dataSource={data} columns={columns} rowKey={(row) => row.id} />;
+      <Table dataSource={data?.data} columns={columns} rowKey={(row) => row.id} />
       <Drawer
         title="Create User"
         onClose={() => setOpen(false)}
+        styles={{ body: { backgroundColor: colorBgLayout } }}
         open={open}
         destroyOnClose
         extra={

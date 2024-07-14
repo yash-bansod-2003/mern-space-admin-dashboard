@@ -1,7 +1,6 @@
-import { PlusOutlined } from "@ant-design/icons";
-import { Button, Card, Col, Input, Row, Select, Space } from "antd";
+import { Card, Col, Input, Row, Select, Space } from "antd";
 
-type UserFiltersProps = React.PropsWithChildren & {};
+type UserFiltersProps = React.PropsWithChildren;
 
 export const UserFilters: React.FC<UserFiltersProps> = ({ children }) => {
   return (
