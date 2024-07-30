@@ -7,6 +7,7 @@ import { RootLayout } from "./layouts/root";
 
 import { HomePage } from "@/pages/home";
 import { UsersPage } from "./pages/users";
+import { RestaurantsPage } from "./pages/restaurants";
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
           {
             path: "/users",
             element: <UsersPage />,
+          },
+          {
+            path: "/restaurants",
+            element: <RestaurantsPage />,
           },
         ],
       },

@@ -21,3 +21,8 @@ export const getUsers = async () => {
   const response = api.get("/api/v1/admin/users");
   return response;
 };
+
+export const getRestaurants = async () => {
+  const response = api.get("/api/v1/tenants");
+  return response;
+};
