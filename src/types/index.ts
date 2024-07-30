@@ -24,5 +24,6 @@ export interface User {
   lastName: string;
   email: string;
   role: Roles;
+  tenantId?: number;
   tenant?: Tenant;
 }

@@ -23,36 +23,45 @@ import {
 } from "@ant-design/icons";
 import { useLogout } from "@/hooks/useLogout";
 import { Logo } from "@/components/logo";
+import { Roles } from "@/types";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
-const items: MenuItem[] = [
-  {
-    key: "/",
-    icon: <HomeOutlined />,
-    label: <Link to="/">Home</Link>,
-  },
-  {
-    key: "/users",
-    icon: <UserOutlined />,
-    label: <Link to="/users">Users</Link>,
-  },
-  {
-    key: "/restaurants",
-    icon: <ShopOutlined />,
-    label: <Link to="/restaurants">Restaurants</Link>,
-  },
-  {
-    key: "/products",
-    icon: <ShoppingCartOutlined />,
-    label: <Link to="/products">Products</Link>,
-  },
-  {
-    key: "/promos",
-    icon: <GiftOutlined />,
-    label: <Link to="/promos">Promos</Link>,
-  },
-];
+const getMenuItems = (role: Roles): MenuItem[] => {
+  const baseItems: MenuItem[] = [
+    {
+      key: "/",
+      icon: <HomeOutlined />,
+      label: <Link to="/">Home</Link>,
+    },
+    {
+      key: "/restaurants",
+      icon: <ShopOutlined />,
+      label: <Link to="/restaurants">Restaurants</Link>,
+    },
+    {
+      key: "/products",
+      icon: <ShoppingCartOutlined />,
+      label: <Link to="/products">Products</Link>,
+    },
+    {
+      key: "/promos",
+      icon: <GiftOutlined />,
+      label: <Link to="/promos">Promos</Link>,
+    },
+  ];
+  if (role === "admin") {
+    const menus = [...baseItems];
+    menus.splice(1, 0, {
+      key: "/users",
+      icon: <UserOutlined />,
+      label: <Link to="/users">Users</Link>,
+    });
+    return menus;
+  }
+  return baseItems;
+};
+
 export const Dashboard = () => {
   const [collapsed, setCollapsed] = React.useState<boolean>(false);
   const {
@@ -63,6 +72,7 @@ export const Dashboard = () => {
   if (!user) {
     return <Navigate to="/auth/login" replace />;
   }
+  const items = getMenuItems(user.role);
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Layout.Sider

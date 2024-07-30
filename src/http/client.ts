@@ -12,7 +12,7 @@ export const api = axios.create({
 
 const refreshTokenRequest = async () => {
   const { data } = await api.get(
-    `${import.meta.env.VITE_BACKEND_API_URL}/api/auth/refresh`,
+    `${import.meta.env.VITE_BACKEND_API_URL}/api/v1/refresh`,
     { withCredentials: true },
   );
   return data;
