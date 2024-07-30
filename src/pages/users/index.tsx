@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { User } from "@/types";
 import { useAuthStore } from "@/store/auth";
 import { UserFilters } from "./user-filters";
+import { UserForm } from "./form";
 
 const handleGetUsers = async () => {
   const response = await getUsers();
@@ -39,7 +40,9 @@ const columns = [
 export const UsersPage = () => {
   const { user } = useAuthStore();
   const [open, setOpen] = React.useState<boolean>(false);
-  const { token: { colorBgLayout } } = theme.useToken();
+  const {
+    token: { colorBgLayout },
+  } = theme.useToken();
   const { data } = useQuery({
     queryKey: ["users"],
     queryFn: handleGetUsers,
@@ -63,8 +66,13 @@ export const UsersPage = () => {
           Add User
         </Button>
       </UserFilters>
-      <Table dataSource={data?.data} columns={columns} rowKey={(row) => row.id} />
+      <Table
+        dataSource={data?.data}
+        columns={columns}
+        rowKey={(row) => row.id}
+      />
       <Drawer
+        width={"38rem"}
         title="Create User"
         onClose={() => setOpen(false)}
         styles={{ body: { backgroundColor: colorBgLayout } }}
@@ -77,9 +85,7 @@ export const UsersPage = () => {
           </Space>
         }
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <UserForm />
       </Drawer>
     </Space>
   );
