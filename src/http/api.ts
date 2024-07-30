@@ -1,5 +1,5 @@
 import { api } from "./client";
-import type { Credentials } from "@/types";
+import type { Credentials, User } from "@/types";
 
 export const login = async (values: Credentials) => {
   const { email, password } = values;
@@ -19,6 +19,11 @@ export const self = async () => {
 
 export const getUsers = async () => {
   const response = api.get("/api/v1/admin/users");
+  return response;
+};
+
+export const createUser = async (user: User) => {
+  const response = api.post("/api/v1/admin/users", user);
   return response;
 };
 
